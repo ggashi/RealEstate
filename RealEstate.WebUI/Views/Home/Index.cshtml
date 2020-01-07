@@ -1,0 +1,83 @@
+﻿@model RealEstate.WebUI.Models.Home.IndexViewModel
+
+<div class="row mb-3">
+    <div class="col-lg-12">
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <div class="row">
+                    <div class="col">
+                        Find by title:
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" name="SearchString" value="@ViewData["currentFilter"]" />
+                    </div>
+                    <div class="col">
+                        <select class="form-control" name="SelectedTypeId" asp-items="ViewBag.TypeId" value="@ViewData["selectedTypeId"]"></select>
+                    </div>
+                    <div class="col">
+                        <select class="form-control" name="SelectedLocationId" asp-items="ViewBag.LocationId" value="@ViewData["selectedLocationId"]"></select>
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="IsRent" checked="@ViewData["IsRent"]" />
+                            Is rent?
+                        </label>
+                    </div>
+                    <div class="col">
+                        <select class="form-control" name="SortOrder" value="@ViewData["sortOrder"]">
+                            <option value="">Order by</option>
+                            <option value="price">Price</option>
+                            <option value="date">Date</option>
+                            <option value="is_rent">Is Rent</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </div>
+                    <div class="col">
+                        <a asp-action="Main">Back to Full List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var property in Model.Properties)
+    {
+        <div class="col-3 mb-3 px-2">
+            <a asp-action="Details" asp-route-id="@property.Id" class="card">
+                <div class="card-body">
+                    <img class="thumbnail" src="@property.Image"/>
+
+                    <h5 class="card-title">@property.Title</h5>
+
+                    <p>@property.Description</p>
+                    <p>@property.LocationId</p>
+
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+@{
+    var prevDisabled = !Model.Properties.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Properties.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.Properties.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">   
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.Properties.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

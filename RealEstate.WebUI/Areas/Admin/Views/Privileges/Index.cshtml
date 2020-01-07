@@ -1,0 +1,41 @@
+﻿@model RealEstate.WebUI.Areas.Admin.ViewModels.PrivilegesIndexViewModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Read</th>
+            <th>Write</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+        <tr>
+            <td>@user.UserName</td>
+            @if (Model.UserProperties.FirstOrDefault(up => up.UserId == user.Id) != null)
+            {
+                <td>Yes</td>
+            }
+            else
+            {
+                <td>No</td>
+            }
+            @if (Model.UserProperties.FirstOrDefault(up => up.UserId == user.Id && up.HasWrite) != null)
+            {
+                <td>Yes</td>
+            }
+            else
+            {
+                <td>No</td>
+            }
+
+            <td>
+                <a asp-action="Update" asp-route-propertyId="@Model.Property.Id" asp-route-userId="@user.Id">Edit</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

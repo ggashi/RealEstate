@@ -1,0 +1,72 @@
+﻿@model RealEstate.WebUI.Areas.Admin.ViewModels.PropertiesIndexViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>IsRent</th>
+            <th>CreatedDate</th>
+            <th>UpdatedDate</th>
+            <th>Location</th>
+            <th>Type</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Properties)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsRent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type.Id)
+                </td>
+
+                
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-controller="Contacts" asp-action="Index" asp-route-id="@item.Id">Index</a>
+
+
+                    @if (Model.IsAdmin)
+                    {
+                        <a asp-controller="Privileges" asp-action="Index" asp-route-id="@item.Id">Privileges</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
